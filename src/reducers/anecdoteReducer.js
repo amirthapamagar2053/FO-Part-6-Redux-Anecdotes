@@ -32,7 +32,7 @@ const reducer = (state = initialState, action) => {
           return anecdote;
         }
       });
-      return state;
+      return state.sort((a, b) => b.votes - a.votes); //Returns the sorted anecdotes based on the votes
     }
 
     // Triggers the action for adding the anecdote
