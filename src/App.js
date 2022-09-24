@@ -1,5 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
-import { increaseVote } from "./reducers/anecdoteReducer";
+import {
+  increaseVoteAction,
+  addAnecdoteAction,
+} from "./reducers/anecdoteReducer";
 // import reducer from "./reducers/anecdoteReducer";
 
 const App = () => {
@@ -8,7 +11,16 @@ const App = () => {
 
   const vote = (id) => {
     console.log("vote", id);
-    dispatch(increaseVote(anecdotes.find((anecdote) => anecdote.id === id))); //selects the voted anecdote and send it to the action
+    dispatch(
+      increaseVoteAction(anecdotes.find((anecdote) => anecdote.id === id))
+    ); //selects the voted anecdote and send it to the action
+  };
+
+  const addAnecdote = (event) => {
+    event.preventDefault();
+    const anecdotePhrases = event.target.anecdote.value;
+    event.target.anecdote.value = "";
+    dispatch(addAnecdoteAction(anecdotePhrases));
   };
 
   return (
@@ -24,11 +36,11 @@ const App = () => {
         </div>
       ))}
       <h2>create new</h2>
-      <form>
+      <form onSubmit={addAnecdote}>
         <div>
-          <input />
+          <input name="anecdote" />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
   );

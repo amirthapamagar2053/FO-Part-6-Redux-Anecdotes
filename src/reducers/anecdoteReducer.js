@@ -34,15 +34,31 @@ const reducer = (state = initialState, action) => {
       });
       return state;
     }
+
+    // Triggers the action for adding the anecdote
+    case "ADD_ANECDOTE": {
+      return [...state, asObject(action.data)];
+    }
+
+    // Triggers the default action
     default:
       return state;
   }
 };
 
-export const increaseVote = (votedAnecdoteId) => {
+//Action for increasing the anecdote vote
+export const increaseVoteAction = (votedAnecdoteId) => {
   return {
     type: "INCREASING_VOTES",
     data: votedAnecdoteId,
+  };
+};
+
+// Action for add the anecdote
+export const addAnecdoteAction = (anecdotePhrases) => {
+  return {
+    type: "ADD_ANECDOTE",
+    data: anecdotePhrases,
   };
 };
 
