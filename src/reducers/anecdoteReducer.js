@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const anecdotesAtStart = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -19,14 +21,49 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject);
 
-const reducer = (state = initialState, action) => {
-  console.log("state now: ", state);
-  console.log("action", action);
-  switch (action.type) {
-    // Triggers the action for increasing the anecdote votes
-    case "INCREASING_VOTES": {
+/* REDUCERS WITHOUT USING REDUCER TOOLKIT
+====================================================
+// const reducer = (state = initialState, action) => {
+//   console.log("state now: ", state);
+//   console.log("action", action);
+//   switch (action.type) {
+//     // Triggers the action for increasing the anecdote votes
+//     case "INCREASING_VOTES": {
+//       state = state.map((anecdote) => {
+//         if (anecdote.id === action.data.id) {
+//           //Select the anecdote whose vote is to be increased
+//           return { ...anecdote, votes: anecdote.votes + 1 }; //append the incresed voted anecdote to the new state
+//         } else {
+//           return anecdote;
+//         }
+//       });
+//       return state.sort((a, b) => b.votes - a.votes); //Returns the sorted anecdotes based on the votes
+//     }
+
+//     // Triggers the action for adding the anecdote
+//     case "ADD_ANECDOTE": {
+//       return [...state, asObject(action.data)];
+//     }
+
+//     // Triggers the default action
+//     default:
+//       return state;
+//   }
+// };
+============================================================================
+*/
+
+const anecdoteSlice = createSlice({
+  name: "anecdotes",
+  initialState,
+  reducers: {
+    addAnecdoteAction(state, action) {
+      return [...state, asObject(action.payload)];
+    },
+
+    increaseVoteAction(state, action) {
       state = state.map((anecdote) => {
-        if (anecdote.id === action.data.id) {
+        if (anecdote.id === action.payload.id) {
           //Select the anecdote whose vote is to be increased
           return { ...anecdote, votes: anecdote.votes + 1 }; //append the incresed voted anecdote to the new state
         } else {
@@ -34,33 +71,30 @@ const reducer = (state = initialState, action) => {
         }
       });
       return state.sort((a, b) => b.votes - a.votes); //Returns the sorted anecdotes based on the votes
-    }
+    },
+  },
+});
 
-    // Triggers the action for adding the anecdote
-    case "ADD_ANECDOTE": {
-      return [...state, asObject(action.data)]; 
-    }
+export const { addAnecdoteAction, increaseVoteAction } = anecdoteSlice.actions;
+export default anecdoteSlice.reducer;
 
-    // Triggers the default action
-    default:
-      return state;
-  }
-};
+/* ACTION CREATORS
+==========================================================
+// //Action for increasing the anecdote vote
+// export const increaseVoteAction = (votedAnecdoteId) => {
+//   return {
+//     type: "INCREASING_VOTES",
+//     data: votedAnecdoteId,
+//   };
+// };
 
-//Action for increasing the anecdote vote
-export const increaseVoteAction = (votedAnecdoteId) => {
-  return {
-    type: "INCREASING_VOTES",
-    data: votedAnecdoteId,
-  };
-};
-
-// Action for add the anecdote
-export const addAnecdoteAction = (anecdotePhrases) => {
-  return {
-    type: "ADD_ANECDOTE",
-    data: anecdotePhrases,
-  };
-};
-
-export default reducer;
+// // Action for add the anecdote
+// export const addAnecdoteAction = (anecdotePhrases) => {
+//   return {
+//     type: "ADD_ANECDOTE",
+//     data: anecdotePhrases,
+//   };
+// };
+================================================================
+*/
+// export default reducer;
