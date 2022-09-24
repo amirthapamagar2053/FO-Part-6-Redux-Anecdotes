@@ -27,7 +27,8 @@ const reducer = (state = initialState, action) => {
     case "INCREASING_VOTES": {
       state = state.map((anecdote) => {
         if (anecdote.id === action.data.id) {
-          return { ...anecdote, votes: anecdote.votes + 1 };
+          //Select the anecdote whose vote is to be increased
+          return { ...anecdote, votes: anecdote.votes + 1 }; //append the incresed voted anecdote to the new state
         } else {
           return anecdote;
         }
@@ -37,7 +38,7 @@ const reducer = (state = initialState, action) => {
 
     // Triggers the action for adding the anecdote
     case "ADD_ANECDOTE": {
-      return [...state, asObject(action.data)];
+      return [...state, asObject(action.data)]; 
     }
 
     // Triggers the default action
