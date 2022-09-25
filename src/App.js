@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import Filter from "./components/Filter";
 import Notification from "./components/Notification";
 import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
@@ -12,7 +13,13 @@ import {
 } from "./reducers/notificationReducer";
 
 const App = () => {
-  const anecdotes = useSelector((state) => state.anecdote);
+  const anecdotes = useSelector((state) => {
+    if (state.filter.length === 0) {
+      return state.anecdote;
+    } else {
+      return state.filter;
+    }
+  });
   const dispatch = useDispatch();
 
   const vote = (id) => {
@@ -43,6 +50,7 @@ const App = () => {
     <div>
       <h2>Anecdotes</h2>
       <Notification />
+      <Filter />
       <AnecdoteList anecdotes={anecdotes} vote={vote} />
       <AnecdoteForm addAnecdote={addAnecdote} />
     </div>
