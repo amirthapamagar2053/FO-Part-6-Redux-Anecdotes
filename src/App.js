@@ -1,4 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import anecdoteSerive from "./services/anecdote";
 import Filter from "./components/Filter";
 import Notification from "./components/Notification";
 import AnecdoteForm from "./components/AnecdoteForm";
@@ -6,6 +8,7 @@ import AnecdoteList from "./components/AnecdoteList";
 import {
   increaseVoteAction,
   addAnecdoteAction,
+  setAnecdote,
 } from "./reducers/anecdoteReducer";
 import {
   set_Notification,
@@ -13,6 +16,11 @@ import {
 } from "./reducers/notificationReducer";
 
 const App = () => {
+  //the useeffect is to get the data from the db.json and is send to the reducer through action creator and is stored in store
+  useEffect(() => {
+    anecdoteSerive.getAll().then((anecdote) => dispatch(setAnecdote(anecdote)));
+  }, []);
+
   const anecdotes = useSelector((state) => {
     if (state.filter.length === 0) {
       return state.anecdote;

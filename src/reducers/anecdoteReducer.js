@@ -55,7 +55,7 @@ const initialState = anecdotesAtStart.map(asObject);
 
 const anecdoteSlice = createSlice({
   name: "anecdotes",
-  initialState,
+  initialState: [],
   reducers: {
     addAnecdoteAction(state, action) {
       return [...state, asObject(action.payload)];
@@ -72,10 +72,16 @@ const anecdoteSlice = createSlice({
       });
       return state.sort((a, b) => b.votes - a.votes); //Returns the sorted anecdotes based on the votes
     },
+
+    // setAnecdote is used for setting the data from the db.json(backend) in store
+    setAnecdote(state, action) {
+      return action.payload;
+    },
   },
 });
 
-export const { addAnecdoteAction, increaseVoteAction } = anecdoteSlice.actions;
+export const { addAnecdoteAction, increaseVoteAction, setAnecdote } =
+  anecdoteSlice.actions;
 export default anecdoteSlice.reducer;
 
 /* ACTION CREATORS
