@@ -43,11 +43,28 @@ const App = () => {
     }, 5000);
   };
 
-  const addAnecdote = (event) => {
+  /*FUNTION USED FOR WITHOUT BACKEND OR AXIOS -- DB.JSON
+  ============================================================
+  // const addAnecdote = (event) => {
+  //   event.preventDefault();
+  //   const anecdotePhrases = event.target.anecdote.value;
+  //   event.target.anecdote.value = "";
+  //   dispatch(addAnecdoteAction(anecdotePhrases));
+  //   dispatch(set_Notification(anecdotePhrases));
+  //   setTimeout(() => {
+  //     dispatch(remove_Notification(""));
+  //   }, 5000);
+  // };
+  */
+
+  //USED WITH AXIOS
+  // =============================================
+  const addAnecdote = async (event) => {
     event.preventDefault();
     const anecdotePhrases = event.target.anecdote.value;
     event.target.anecdote.value = "";
-    dispatch(addAnecdoteAction(anecdotePhrases));
+    const newAnecdote = await anecdoteSerive.createNew(anecdotePhrases);
+    dispatch(addAnecdoteAction(newAnecdote));
     dispatch(set_Notification(anecdotePhrases));
     setTimeout(() => {
       dispatch(remove_Notification(""));
