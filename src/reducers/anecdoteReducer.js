@@ -124,7 +124,7 @@ export const createAnecdote = (content) => {
 
 export const increaseVote = (content) => {
   return async (dispatch) => {
-    const updatedAnecdote = await anecdoteSerive.update(content);
+    const updatedAnecdote = await anecdoteSerive.updatedAnecdoteVotes(content);
     dispatch(increaseVoteAction(updatedAnecdote));
   };
 };

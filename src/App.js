@@ -14,8 +14,9 @@ import {
   //setAnecdote, //commented out beacasue of use of redux-thunk
 } from "./reducers/anecdoteReducer";
 import {
-  set_Notification,
-  remove_Notification,
+  // set_Notification, //commented out beacasue of use of redux-thunk
+  // remove_Notification,//commented out beacasue of use of redux-thunk
+  imporvedNotification,
 } from "./reducers/notificationReducer";
 
 const App = () => {
@@ -43,12 +44,19 @@ const App = () => {
     //   increaseVoteAction(anecdotes.find((anecdote) => anecdote.id === id))
     // ); //selects the voted anecdote and send it to the action (reducers)
     dispatch(increaseVote(anecdotes.find((anecdote) => anecdote.id === id))); //used with the thunk
+    // dispatch(
+    //   set_Notification(anecdotes.find((anecdote) => anecdote.id === id)) //selects the voted anecdote and send it to the action (reducers)
+    // );
     dispatch(
-      set_Notification(anecdotes.find((anecdote) => anecdote.id === id)) //selects the voted anecdote and send it to the action (reducers)
-    );
-    setTimeout(() => {
-      dispatch(remove_Notification(""));
-    }, 5000);
+      imporvedNotification(
+        anecdotes.find((anecdote) => anecdote.id === id),
+        2
+      ) //Using with redux thunk
+    ); 
+    // IS USED IF REDUX-THUNK IS NOT USED
+    // setTimeout(() => {
+    //   dispatch(remove_Notification(""));
+    // }, 5000);
   };
 
   /*FUNTION USED FOR WITHOUT BACKEND OR AXIOS -- DB.JSON
@@ -87,10 +95,11 @@ const App = () => {
     const anecdotePhrases = event.target.anecdote.value;
     event.target.anecdote.value = "";
     dispatch(createAnecdote(anecdotePhrases)); //use of redux-thunk
-    dispatch(set_Notification(anecdotePhrases));
-    setTimeout(() => {
-      dispatch(remove_Notification(""));
-    }, 5000);
+    dispatch(imporvedNotification(anecdotePhrases, 2));
+    // IS USED IF REDUX-THUNK IS NOT USED
+    // setTimeout(() => {
+    //   dispatch(remove_Notification(""));
+    // }, 5000);
   };
 
   return (
