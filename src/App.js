@@ -6,10 +6,11 @@ import Notification from "./components/Notification";
 import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
 import {
-  increaseVoteAction,
+  // increaseVoteAction, //commented out beacasue of use of redux-thunk
   // addAnecdoteAction, //commented out beacasue of use of redux-thunk
   initializeAnecdote,
   createAnecdote,
+  increaseVote,
   //setAnecdote, //commented out beacasue of use of redux-thunk
 } from "./reducers/anecdoteReducer";
 import {
@@ -38,9 +39,10 @@ const App = () => {
   const dispatch = useDispatch();
   const vote = (id) => {
     console.log("vote", id);
-    dispatch(
-      increaseVoteAction(anecdotes.find((anecdote) => anecdote.id === id))
-    ); //selects the voted anecdote and send it to the action (reducers)
+    // dispatch(
+    //   increaseVoteAction(anecdotes.find((anecdote) => anecdote.id === id))
+    // ); //selects the voted anecdote and send it to the action (reducers)
+    dispatch(increaseVote(anecdotes.find((anecdote) => anecdote.id === id))); //used with the thunk
     dispatch(
       set_Notification(anecdotes.find((anecdote) => anecdote.id === id)) //selects the voted anecdote and send it to the action (reducers)
     );

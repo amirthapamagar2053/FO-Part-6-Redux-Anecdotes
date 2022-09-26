@@ -71,21 +71,34 @@ const anecdoteSlice = createSlice({
       return [...state, action.payload];
     },
 
+    //USED FOR THE FUNCTIONALITY WITHOUT THUNK
+    // ================================================
+    // increaseVoteAction(state, action) {
+    //   state = state.map((anecdote) => {
+    //     console.log("the vote action enterd");
+    //     if (anecdote.id === action.payload.id) {
+    //       //Select the anecdote whose vote is to be increased
+    //       return { ...anecdote, votes: anecdote.votes + 1 }; //append the incresed voted anecdote to the new state
+    //     } else {
+    //       return anecdote;
+    //     }
+    //   });
+    //   return state.sort((a, b) => b.votes - a.votes); //Returns the sorted anecdotes based on the votes
+    // },
+
+    //USED FOR THE FUNCTIONALITY OF THUNK
+    // =====================================================
     increaseVoteAction(state, action) {
-      state = state.map((anecdote) => {
-        if (anecdote.id === action.payload.id) {
-          //Select the anecdote whose vote is to be increased
-          return { ...anecdote, votes: anecdote.votes + 1 }; //append the incresed voted anecdote to the new state
-        } else {
-          return anecdote;
-        }
-      });
-      return state.sort((a, b) => b.votes - a.votes); //Returns the sorted anecdotes based on the votes
+      const id = action.payload.id;
+      const filterState = state.filter((anecdote) => anecdote.id !== id);
+      const newState = [...filterState, action.payload];
+      return newState.sort((a, b) => b.votes - a.votes); //Returns the sorted anecdotes based on the votes
     },
 
     // setAnecdote is used for setting the data from the db.json(backend) in store
     setAnecdote(state, action) {
-      return action.payload;
+      // return action.payload  //Displays the anectotes in unsorted way
+      return action.payload.sort((a, b) => b.votes - a.votes); //Display the anectodes sorted in the amount of votes when refreshing the browser
     },
   },
 });
@@ -104,8 +117,15 @@ export const initializeAnecdote = () => {
 
 export const createAnecdote = (content) => {
   return async (dispatch) => {
-    const newNote = await anecdoteSerive.createNew(content);
-    dispatch(addAnecdoteAction(newNote));
+    const newAnecdote = await anecdoteSerive.createNew(content);
+    dispatch(addAnecdoteAction(newAnecdote));
+  };
+};
+
+export const increaseVote = (content) => {
+  return async (dispatch) => {
+    const updatedAnecdote = await anecdoteSerive.update(content);
+    dispatch(increaseVoteAction(updatedAnecdote));
   };
 };
 
