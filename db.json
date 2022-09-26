@@ -34,6 +34,11 @@
       "content": "test for db.json",
       "votes": 0,
       "id": "5FOevUI"
+    },
+    {
+      "content": "test without append",
+      "votes": 0,
+      "id": "vB5zXXU"
     }
   ]
 }

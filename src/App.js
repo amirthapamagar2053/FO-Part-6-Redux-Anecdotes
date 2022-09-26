@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import anecdoteSerive from "./services/anecdote";
+// import anecdoteSerive from "./services/anecdote";
 import Filter from "./components/Filter";
 import Notification from "./components/Notification";
 import AnecdoteForm from "./components/AnecdoteForm";
@@ -8,7 +8,8 @@ import AnecdoteList from "./components/AnecdoteList";
 import {
   increaseVoteAction,
   addAnecdoteAction,
-  setAnecdote,
+  initializeAnecdote,
+  //setAnecdote, //commented out beacasue of use of redux-thunk
 } from "./reducers/anecdoteReducer";
 import {
   set_Notification,
@@ -17,8 +18,13 @@ import {
 
 const App = () => {
   //the useeffect is to get the data from the db.json and is send to the reducer through action creator and is stored in store
+  // useEffect(() => {
+  //   anecdoteSerive.getAll().then((anecdote) => dispatch(setAnecdote(anecdote)));
+  // }, []);
+
+  //the useeffect is to get the data from the db.json and is send to the reducer through action creator and is stored in store through the redux-thunk
   useEffect(() => {
-    anecdoteSerive.getAll().then((anecdote) => dispatch(setAnecdote(anecdote)));
+    dispatch(initializeAnecdote());
   }, []);
 
   const anecdotes = useSelector((state) => {
@@ -29,7 +35,6 @@ const App = () => {
     }
   });
   const dispatch = useDispatch();
-
   const vote = (id) => {
     console.log("vote", id);
     dispatch(
@@ -57,14 +62,28 @@ const App = () => {
   // };
   */
 
+  /*
   //USED WITH AXIOS
   // =============================================
-  const addAnecdote = async (event) => {
+  // const addAnecdote = async (event) => {
+  //   event.preventDefault();
+  //   const anecdotePhrases = event.target.anecdote.value;
+  //   event.target.anecdote.value = "";
+  //   const newAnecdote = await anecdoteSerive.createNew(anecdotePhrases);
+  //   dispatch(addAnecdoteAction(newAnecdote));
+  //   dispatch(set_Notification(anecdotePhrases));
+  //   setTimeout(() => {
+  //     dispatch(remove_Notification(""));
+  //   }, 5000);
+  // };
+  */
+
+  //This was resued with the help of redux-thunk
+  const addAnecdote = (event) => {
     event.preventDefault();
     const anecdotePhrases = event.target.anecdote.value;
     event.target.anecdote.value = "";
-    const newAnecdote = await anecdoteSerive.createNew(anecdotePhrases);
-    dispatch(addAnecdoteAction(newAnecdote));
+    dispatch(addAnecdoteAction(anecdotePhrases));
     dispatch(set_Notification(anecdotePhrases));
     setTimeout(() => {
       dispatch(remove_Notification(""));
