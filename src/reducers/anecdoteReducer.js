@@ -94,10 +94,18 @@ export const { addAnecdoteAction, increaseVoteAction, setAnecdote } =
   anecdoteSlice.actions;
 export default anecdoteSlice.reducer;
 
+//Use of redux thunk to initialize the state
 export const initializeAnecdote = () => {
   return async (dispatch) => {
     const anecdotes = await anecdoteSerive.getAll();
     dispatch(setAnecdote(anecdotes));
+  };
+};
+
+export const createAnecdote = (content) => {
+  return async (dispatch) => {
+    const newNote = await anecdoteSerive.createNew(content);
+    dispatch(addAnecdoteAction(newNote));
   };
 };
 

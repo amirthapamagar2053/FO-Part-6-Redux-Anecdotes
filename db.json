@@ -39,6 +39,11 @@
       "content": "test without append",
       "votes": 0,
       "id": "vB5zXXU"
+    },
+    {
+      "content": "created with use of thunk",
+      "votes": 0,
+      "id": "XKyAX84"
     }
   ]
 }

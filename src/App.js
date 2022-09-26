@@ -7,8 +7,9 @@ import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
 import {
   increaseVoteAction,
-  addAnecdoteAction,
+  // addAnecdoteAction, //commented out beacasue of use of redux-thunk
   initializeAnecdote,
+  createAnecdote,
   //setAnecdote, //commented out beacasue of use of redux-thunk
 } from "./reducers/anecdoteReducer";
 import {
@@ -83,7 +84,7 @@ const App = () => {
     event.preventDefault();
     const anecdotePhrases = event.target.anecdote.value;
     event.target.anecdote.value = "";
-    dispatch(addAnecdoteAction(anecdotePhrases));
+    dispatch(createAnecdote(anecdotePhrases)); //use of redux-thunk
     dispatch(set_Notification(anecdotePhrases));
     setTimeout(() => {
       dispatch(remove_Notification(""));
